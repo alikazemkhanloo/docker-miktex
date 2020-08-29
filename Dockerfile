@@ -1,6 +1,14 @@
-FROM ubuntu:bionic
+FROM ubuntu:focal
 
 LABEL Description="Dockerized MiKTeX, Ubuntu 20.04" Vendor="Christian Schenk" Version="20.7"
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV DEBCONF_NONINTERACTIVE_SEEN true
+
+RUN echo "tzdata tzdata/Areas select Europe" > /tmp/preseed.txt; \
+    echo "tzdata tzdata/Zones/Europe select Berlin" >> /tmp/preseed.txt; \
+    debconf-set-selections /tmp/preseed.txt
+
 
 RUN    apt-get update \
     && apt-get install -y --no-install-recommends \
